@@ -1,0 +1,5 @@
+<%flags>
+  extends => '../element/select/base.mp'
+</%flags>
+
+<% $.content %>
