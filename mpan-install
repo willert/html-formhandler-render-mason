@@ -9291,12 +9291,14 @@ CHECK_PREREQS
     
   );
   my @prereqs = (
+    'MooseX::ErsatzMethod~0.003',
+    'File::Share~0.02',
     'Test::More~0.96',
     'HTML::FormHandler~0.40',
     'Mason~2.20',
-    'Find::Lib',
     'MooseX::OmniTrigger~0.06',
-    'File::Share~0.02',
+    'Find::Lib',
+    'MooseX::MaybeBuild~0.21',
     'MooseX::ClassAttribute~0.26'
   );
 
