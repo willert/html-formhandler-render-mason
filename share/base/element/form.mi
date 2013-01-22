@@ -1,0 +1,5 @@
+<%flags>
+  extends => 'base/form.mp'
+</%flags>
+
+<% $.element %>

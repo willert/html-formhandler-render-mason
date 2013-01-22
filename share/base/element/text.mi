@@ -1,0 +1,5 @@
+<%flags>
+  extends => 'base/input.mp'
+</%flags>
+
+<% $.content %>

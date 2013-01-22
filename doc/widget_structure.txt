@@ -1,0 +1,22 @@
+Generic widget outline
+
+Field-Widgets:
+--------------
+<widget>
+  <container>
+	  <field>
+  	  <label />
+      <element />
+	  </field>
+		<message />
+  </container>
+</widget>
+		
+
+Form:
+-----
+<widget>
+  <form>
+	  [content]
+  <form>
+</widget>

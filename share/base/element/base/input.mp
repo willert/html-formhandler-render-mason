@@ -1,4 +1,5 @@
 use MooseX::OmniTrigger;
+use MooseX::ErsatzMethod;
 use 5.010;
 
 with (
@@ -6,6 +7,7 @@ with (
   'HTML::FormHandler::Render::MasonX::HTML::Attr',
 );
 
+has element_tagname => ( default => 'input' );
 __PACKAGE__->add_html_attr(qw/ size maxlength value checked /);
 
 sub _build_size {
@@ -35,19 +37,6 @@ sub _build_checked {
     and $field->fif eq $field->checkbox_value;
   return 'checked';
 }
-
-sub _build_element {
-  my $self = shift;
-  my $output = '';
-  $output .= '<input';
-  for my $attr ( $self->html_attrs ) {
-    $output .= $self->$attr;
-  }
-  $output .= $self->additional_attrs;
-  $output .= ' />';
-
-  return $output;
-};
 
 sub content {
   my $self = shift;

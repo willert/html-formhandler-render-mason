@@ -5,6 +5,7 @@ with (
   'HTML::FormHandler::Render::MasonX::HTML::Attr',
 );
 
+has element_tagname => ( default => 'select' );
 __PACKAGE__->add_html_attr( qw/ size multiple / );
 
 sub _build_size {
@@ -21,19 +22,12 @@ sub _build_multiple {
   return 'multiple';
 }
 
-sub _build_element {
+sub _build_element_content {
   my $self = shift;
-  my $field = $self->field;
 
   my $output = '';
-  $output .= '<select';
-  for my $attr ( $self->html_attrs ) {
-    $output .= $self->$attr;
-  }
-  $output .= $self->additional_attrs;
-  $output .= '>';
-  $output .= "\n";
 
+  my $field    = $self->field;
   my $multiple = $field->multiple;
 
   if( defined $field->empty_select ) {
@@ -51,7 +45,7 @@ sub _build_element {
   my $index = 0;
   foreach my $option ( @{ $field->{options} } ) {
     $output .= $m->scomp(
-      '/widget/select/option.mi',
+      '/element/select/option.mi',
       index => $index,
       field => $self->field,
       %$option,
@@ -59,10 +53,8 @@ sub _build_element {
     $index++;
   }
 
-  $output .= '</select>';
   return $output;
 }
-
 
 sub content {
   my $self = shift;

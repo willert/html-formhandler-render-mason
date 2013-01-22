@@ -70,4 +70,23 @@ method _build_additional_attrs () {
   );
 }
 
+sub _build_element_starttag {
+  my $self = shift;
+
+  my $output = '<';
+  $output .= $self->element_tagname;
+  for my $attr ( $self->html_attrs ) {
+    $output .= $self->$attr;
+  }
+  $output .= $self->additional_attrs;
+
+  if ( $self->allow_element_shorthand and not $self->has_element_content ) {
+    $output .= '>';
+  } else {
+    $output .= ' />';
+  }
+
+  return $output;
+}
+
 1;

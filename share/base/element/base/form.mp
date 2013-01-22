@@ -28,7 +28,7 @@ sub call_next {
   return;
 }
 
-sub content {
+sub element {
   my $self = shift;
 
   print '<form' . $self->additional_attrs . '>';

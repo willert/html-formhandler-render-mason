@@ -1,30 +1,78 @@
 use HTML::FormHandler::Render::Util ();
 use 5.010;
 
-method field( $field ) {
+has form_error_class             => ( default => [qw/ with-errors   /]);
+has field_validation_error_class => ( default => [qw/ field-error   /]);
+has field_missing_error_class    => ( default => [qw/ field-missing /]);
+
+method container ( $field ) {
+  $self->field( $field );
+  $self->message( $field );
+}
+
+method message( $field ) {
   if ( ref( \$field ) eq 'SCALAR' ) {
     $field = $form->field($field);
   }
-  die "must pass field to render_field"
+  die "must pass a field to element"
     unless ( defined $field && $field->isa('HTML::FormHandler::Field') );
-  # widgets should be in camel case, since they are Perl package names
-  my $widget = HTML::FormHandler::Render::Util::ucc_widget( $field->widget );
 
+  return unless $field->has_errors;
+
+  print @{ $field->errors };
+
+  return;
+}
+
+
+method label( $field ) {
+  if ( ref( \$field ) eq 'SCALAR' ) {
+    $field = $form->field($field);
+  }
+  die "must pass a field to element"
+    unless ( defined $field && $field->isa('HTML::FormHandler::Field') );
+
+  return unless $field->label;
+
+  print $field->label;
+
+  return;
+}
+
+method element( $field ) {
+  if ( ref( \$field ) eq 'SCALAR' ) {
+    $field = $form->field($field);
+  }
+  die "must pass a field to element"
+    unless ( defined $field && $field->isa('HTML::FormHandler::Field') );
+
+  my $widget = HTML::FormHandler::Render::Util::ucc_widget( $field->widget );
   return '' if $widget eq 'no_render';
 
   $m->comp(
-    sprintf( 'widget/%s.mi', $widget ),
+    sprintf( 'element/%s.mi', $widget ),
     field => $field,
+    ( map{ $_ => $self->$_ } map{ "field_${_}_error_class" }
+        qw/validation missing/ ),
   );
+}
+
+method field( $field ) {
+  $self->label( $field );
+  $self->element( $field );
 }
 
 method content () {
   my $output = '';
   foreach my $field ( $form->sorted_fields ) {
-    print '  ';
-    print $self->field( $field );
+    $self->container( $field );
   }
   return;
+}
+
+
+method widget () {
+  $self->form( @_ );
 }
 
 method form () {
@@ -34,7 +82,8 @@ method form () {
   );
 
   $m->comp(
-    'widget/form.mi',
-    callback => sub{ $self->content },
+    'element/form.mi',
+    callback         => sub{ $self->content },
+    form_error_class => $self->form_error_class,
   );
 }

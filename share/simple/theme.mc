@@ -2,8 +2,19 @@
   extends => 'form.mp'
 </%flags>
 
+<%around label>
+  <label><% $self->$orig( @_ ) %></label>
+</%around>
+
+
+<%around container>
+  <!-- container -->
+    <% $self->$orig( @_ ) %>
+  <!-- /container -->
+</%around>
+
 <%around field>
-  <div class="navbar_special">
+  <div class="form-field">
     <% $self->$orig( @_ ) %>
   </div>
 </%around>
@@ -13,10 +24,4 @@
   <% $self->$orig( @_ ) %>
 </%around>
 
-<%around content>
-  <hr />
-  <% $self->$orig( @_ ) %>
-  <hr />
-</%around>
-
-<% $.form %>
+<% $.widget %>

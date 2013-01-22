@@ -6,6 +6,7 @@ with (
   'HTML::FormHandler::Render::MasonX::HTML::Attr',
 );
 
+has element_tagname => ( default => 'option' );
 __PACKAGE__->add_html_attr(qw/ selected /);
 __PACKAGE__->add_to_html_attrs(qw/ value disabled /);
 
@@ -18,6 +19,7 @@ has index => (
 has label => (
   is => 'rw',
   omnitrigger => \&_sanitize_label_trigger,
+  predicate   => 'has_label',
 );
 
 sub _sanitize_label_trigger {
@@ -116,19 +118,8 @@ sub _build_disabled {
   return 'checked';
 }
 
-sub _build_element {
+sub _build_element_content {
   my $self = shift;
-  my $output = '';
-  $output .= '<option';
-  for my $attr ( $self->html_attrs ) {
-    $output .= $self->$attr;
-  }
-  $output .= $self->additional_attrs;
-  $output .= '>';
-
-  $output .= $self->label;
-
-  $output .= '</option>';
-
-  return $output;
-};
+  return unless $self->has_label;
+  return $self->label;
+}

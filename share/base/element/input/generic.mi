@@ -1,5 +1,0 @@
-<%flags>
-  extends => 'base.mp'
-</%flags>
-
-<% $.widget %>
