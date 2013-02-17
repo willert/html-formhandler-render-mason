@@ -1,0 +1,5 @@
+<%flags>
+  extends => 'base/compound.mp'
+</%flags>
+
+<% $.content %>

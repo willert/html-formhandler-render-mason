@@ -8,9 +8,7 @@
 
 
 <%around container>
-  <!-- container -->
-    <% $self->$orig( @_ ) %>
-  <!-- /container -->
+  <% $self->$orig( @_ ) %>
 </%around>
 
 <%around field>
@@ -20,7 +18,6 @@
 </%around>
 
 <%around form>
-  <h3><% $form->name || 'Your form' %></h3>
   <% $self->$orig( @_ ) %>
 </%around>
 

@@ -9,11 +9,7 @@ use MooseX::ErsatzMethod;
 
 requires '_build_element';
 
-has field => (
-  is       => 'ro',
-  isa      => 'HTML::FormHandler::Field',
-  required => 1,
-);
+with 'HTML::FormHandler::Render::MasonX::Field';
 
 has element => (
   is         => 'rw',

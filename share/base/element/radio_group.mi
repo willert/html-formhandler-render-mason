@@ -1,0 +1,5 @@
+<%flags>
+  extends => 'base/radio_group.mp'
+</%flags>
+
+<% $.content %>

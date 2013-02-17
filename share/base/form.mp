@@ -1,11 +1,13 @@
 use HTML::FormHandler::Render::Util ();
 use 5.010;
 
-has form_error_class             => ( default => [qw/ with-errors   /]);
-has field_validation_error_class => ( default => [qw/ field-error   /]);
-has field_missing_error_class    => ( default => [qw/ field-missing /]);
+with 'HTML::FormHandler::Render::MasonX::SubFields';
 
-method container ( $field ) {
+has form_error_class             => ( default => sub{[qw/ with-errors   /]});
+has field_validation_error_class => ( default => sub{[qw/ field-error   /]});
+has field_missing_error_class    => ( default => sub{[qw/ field-missing /]});
+
+method container( $field ) {
   $self->field( $field );
   $self->message( $field );
 }
@@ -43,17 +45,10 @@ method element( $field ) {
   if ( ref( \$field ) eq 'SCALAR' ) {
     $field = $form->field($field);
   }
-  die "must pass a field to element"
-    unless ( defined $field && $field->isa('HTML::FormHandler::Field') );
-
-  my $widget = HTML::FormHandler::Render::Util::ucc_widget( $field->widget );
-  return '' if $widget eq 'no_render';
-
   $m->comp(
-    sprintf( 'element/%s.mi', $widget ),
-    field => $field,
-    ( map{ $_ => $self->$_ } map{ "field_${_}_error_class" }
-        qw/validation missing/ ),
+    $self->subfiled_comp_spec( $field ),
+    map{ $_ => $self->$_ } map{"field_${_}_class"}
+      qw/ validation_error missing_error /
   );
 }
 

@@ -1,5 +1,3 @@
 <%around content>
-<!-- container -->
-  <% $self->$orig() %>
-<!-- /container -->
+<% $self->$orig() %>
 </%around>

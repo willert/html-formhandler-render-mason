@@ -10,11 +10,32 @@ use Moose::Util::TypeConstraints;
 use HTML::FormHandler::Render::Util ('process_attrs');
 use File::Share;
 
+use Moose::Util::TypeConstraints;
+
+{
+  my $tc = subtype, as 'Str';
+  coerce $tc, from class_type('Path::Class::Dir'), via { $_->stringify };
+
+  has mason_theme_dir => (
+    is         => 'ro',
+    isa        => $tc,
+    coerce     => 1,
+    lazy_build => 1,
+    init_arg   => 'theme_dir',
+  );
+}
+
+
+sub _build_mason_theme_dir {
+  my $self = shift;
+  File::Share::dist_dir('HTML-FormHandler-Render-Mason') . '/simple/';
+}
+
 has mason_config => (
-  is  => 'ro',
-  isa => 'HashRef',
-  traits => ['Hash'],
-  lazy => 1,
+  is      => 'ro',
+  isa     => 'HashRef',
+  traits  => ['Hash'],
+  lazy    => 1,
   builder => 'build_mason_config',
 );
 
@@ -23,8 +44,7 @@ sub build_mason_config {
   return {
     plugins   => [],
     comp_root => [
-      # @{ $self->tt_include_path },
-      File::Share::dist_dir('HTML-FormHandler-Render-Mason') . '/simple/',
+      $self->mason_theme_dir,
       File::Share::dist_dir('HTML-FormHandler-Render-Mason') . '/base/',
     ],
     mason_root_class => 'Mason',
