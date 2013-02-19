@@ -27,9 +27,6 @@ sub _build_checked {
   my $self = shift;
   my $field = $self->field;
 
-  use Data::Dumper::Concise;
-  printf STDERR "Looking up %s in %s\n", $self->fif, $self->value_value;
-
   return '' unless $field->fif eq $self->value_value;
   return 'checked';
 }

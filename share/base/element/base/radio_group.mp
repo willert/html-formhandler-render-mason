@@ -18,9 +18,6 @@ sub _build_element {
   my $index  = 0;
 
   foreach my $option ( @{ $field->{options} } ) {
-    use Data::Dumper::Concise;
-    printf STDERR 'Option: %s%s', Dumper( $option ), "\n";
-
     $output .= $m->scomp(
       '/element/radio.mi',
       index => $index,

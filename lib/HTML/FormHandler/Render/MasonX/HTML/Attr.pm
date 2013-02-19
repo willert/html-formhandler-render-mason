@@ -75,8 +75,6 @@ sub _build_element_starttag {
 
   my $output = '<';
   $output .= $self->element_tagname;
-  printf STDERR "Attributes: %s\n", join( q{, }, $self->html_attrs )
-    if $self->element_tagname eq 'option';
 
   for my $attr ( $self->html_attrs ) {
     $output .= $self->$attr;
