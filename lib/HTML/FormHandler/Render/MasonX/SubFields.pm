@@ -11,7 +11,10 @@ sub subfiled_comp_spec {
     unless ( defined $field && $field->isa('HTML::FormHandler::Field') );
 
   my $widget = HTML::FormHandler::Render::Util::ucc_widget( $field->widget );
-  return '' if $widget eq 'no_render';
+  $widget ||= 'display' if $field->isa( 'HTML::FormHandler::Field::Display' );
+  die "Can't find widget for $field" unless $widget;
+
+  return if $widget eq 'no_render';
 
   return (
     sprintf( '/element/%s.mi', $widget ),
